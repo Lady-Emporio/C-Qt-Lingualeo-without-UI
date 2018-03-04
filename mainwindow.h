@@ -37,7 +37,7 @@ public:
     QSqlDatabase db;
     QSqlQuery query;
 
-    void nextRound();
+    bool nextRound();
 private slots:
     void slotButton();
 };

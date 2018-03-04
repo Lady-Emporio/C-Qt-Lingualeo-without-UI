@@ -131,17 +131,27 @@ void MainWindow::slotButton(){
     }
 }
 
-void MainWindow::nextRound(){
+bool MainWindow::nextRound(){
     buttom_1->setStyleSheet(DEFAULT_COLOR);
     buttom_2->setStyleSheet(DEFAULT_COLOR);
     buttom_3->setStyleSheet(DEFAULT_COLOR);
     buttom_4->setStyleSheet(DEFAULT_COLOR);
 
     int MAXROWDB=0;
-    query=db.exec( QString( "SELECT MAX(id) from MainTable" ) );
-    query.first();
-    MAXROWDB=query.value(0).toInt();
+    try{
+        query=db.exec( QString( "SELECT MAX(id) from MainTable" ) );
+        query.first();
 
+    }
+    catch(...){
+       label->setText("Наверное не тот бд");
+       return false;
+    }
+    MAXROWDB=query.value(0).toInt();
+    if (MAXROWDB==0){
+    label->setText("В бд нет строк, похоже она пустая.");
+    return false;
+    }
     std::vector<int> ListIntId;
     pushInMyListID(ListIntId,MAXROWDB);
     QString World[4][4]; //ru,eng,audio, image;
@@ -161,9 +171,9 @@ void MainWindow::nextRound(){
            }
        }
     label->setText(ChooseWord[1]);
-       buttom_1->setText(World[0][0]);
-       buttom_2->setText(World[1][0]);
-       buttom_3->setText(World[2][0]);
-       buttom_4->setText(World[3][0]);
+    buttom_1->setText(World[0][0]);
+    buttom_2->setText(World[1][0]);
+    buttom_3->setText(World[2][0]);
+    buttom_4->setText(World[3][0]);
 
 }
