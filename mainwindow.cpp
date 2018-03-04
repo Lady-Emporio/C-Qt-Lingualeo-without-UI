@@ -2,7 +2,6 @@
 #include <vector>
 #include <algorithm>
 
-
 const int SUMBUT=4;//количество кнопок.
 const QString TRUE_ANSWER_COLOR="background-color: rgb(251, 249, 236);";
 const QString FALSE_ANSWER_COLOR="background-color: rgb(204, 192, 133);";
@@ -20,8 +19,7 @@ void pushInMyListID(std::vector<int> &MyVec,int const &MaxInt){
     };
 }
 
-Buttom::Buttom(QPushButton *parent):
-    QPushButton(parent){
+Buttom::Buttom(QPushButton *parent): QPushButton(parent){
     //font and start text
     {
     QFont font;
@@ -43,12 +41,36 @@ Buttom::Buttom(QPushButton *parent):
     this->setSizePolicy(sizePolicy);
 }
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent)
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     QWidget *window = new QWidget;
-    this->setCentralWidget(window);
+    //Testing QMenuBar
+    {
+    highTopMenu=new QMenuBar;
+    highTopMenu->setStyleSheet("background-color:rgb(204,192,133);");
+    QMenu*   firstMenuInHighTopMenu   = new QMenu("&Файл");
 
+    firstMenuInHighTopMenu->addAction("&About Qt",
+                        this,
+                        SLOT(aboutQt()),
+                        Qt::CTRL + Qt::Key_Q
+                       );
+    firstMenuInHighTopMenu->addSeparator(); //set Sepatator
+
+
+    QAction* pCheckableAction = firstMenuInHighTopMenu->addAction("&ClickMe");
+    pCheckableAction->setCheckable(true);
+    pCheckableAction->setChecked(true);
+
+    QMenu* pmnuSubMenu = new QMenu("&SubMenu", firstMenuInHighTopMenu);
+    firstMenuInHighTopMenu->addMenu(pmnuSubMenu);
+    pmnuSubMenu->addAction("&Test");
+
+    highTopMenu->addMenu(firstMenuInHighTopMenu);
+    this->setMenuBar(highTopMenu);
+
+    }
+    this->setCentralWidget(window);
     buttomLauout =new QHBoxLayout;
     mainLayout =new QVBoxLayout(this);
     buttom_1 =new Buttom;

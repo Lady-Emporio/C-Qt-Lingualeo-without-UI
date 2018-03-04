@@ -8,6 +8,11 @@
 #include <QPushButton>
 #include <QtSql>
 #include <QWidget>
+#include <QMenuBar>
+#include <QMenu>
+#include <QAction>
+
+
 class Buttom : public QPushButton
 {
    Q_OBJECT
@@ -31,6 +36,7 @@ public:
     QHBoxLayout *buttomLauout;
     QVBoxLayout *mainLayout;
     QWidget *window;
+    QMenuBar *highTopMenu;
 
     QString ChooseWord[2];
     bool go_next;
