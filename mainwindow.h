@@ -12,6 +12,10 @@
 #include <QMenu>
 #include <QAction>
 
+#include <QDir>
+#include <QUrl>
+#include <QtMultimedia>
+#include <QtMultimediaWidgets>
 
 class Buttom : public QPushButton
 {
@@ -33,6 +37,7 @@ public:
     Buttom *buttom_2;
     Buttom *buttom_3;
     Buttom *buttom_4;
+    Buttom **buttomList;
     QHBoxLayout *buttomLauout;
     QVBoxLayout *mainLayout;
     QWidget *window;
@@ -40,12 +45,15 @@ public:
 
     QString ChooseWord[2];
     bool go_next;
+    bool runAudio;
     QSqlDatabase db;
     QSqlQuery query;
 
     bool nextRound();
 private slots:
     void slotButton();
+    void ColorTrueAncwer();
+    void AudioPlay();
 };
 
 #endif // MAINWINDOW_H

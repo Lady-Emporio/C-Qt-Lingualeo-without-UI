@@ -50,17 +50,18 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     highTopMenu->setStyleSheet("background-color:rgb(204,192,133);");
     QMenu*   firstMenuInHighTopMenu   = new QMenu("&Файл");
 
-    firstMenuInHighTopMenu->addAction("&About Qt",
+    firstMenuInHighTopMenu->addAction("True Answer",
                         this,
-                        SLOT(aboutQt()),
+                        SLOT(ColorTrueAncwer()),
                         Qt::CTRL + Qt::Key_Q
                        );
     firstMenuInHighTopMenu->addSeparator(); //set Sepatator
 
 
-    QAction* pCheckableAction = firstMenuInHighTopMenu->addAction("&ClickMe");
+    QAction* pCheckableAction = firstMenuInHighTopMenu->addAction("AudioPlay",this,
+                                                                  SLOT(AudioPlay()));
     pCheckableAction->setCheckable(true);
-    pCheckableAction->setChecked(true);
+    pCheckableAction->setChecked(false);
 
     QMenu* pmnuSubMenu = new QMenu("&SubMenu", firstMenuInHighTopMenu);
     firstMenuInHighTopMenu->addMenu(pmnuSubMenu);
@@ -73,6 +74,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     this->setCentralWidget(window);
     buttomLauout =new QHBoxLayout;
     mainLayout =new QVBoxLayout(this);
+    //create buttom
+    {
     buttom_1 =new Buttom;
     buttom_1->setObjectName("buttom_1");
     buttom_2 =new Buttom;
@@ -81,6 +84,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
     buttom_3->setObjectName("buttom_3");
     buttom_4 =new Buttom;
     buttom_4->setObjectName("buttom_4");
+    buttomList=new Buttom*[4];
+    buttomList[0]=buttom_1;
+    buttomList[1]=buttom_2;
+    buttomList[2]=buttom_3;
+    buttomList[3]=buttom_4;
+    }
     //label setting
     {
     label=new QLabel("start");
@@ -120,6 +129,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 
 
     go_next=false;
+    runAudio=false;
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName("lingualeo.db");
     if (!db.open()){
@@ -139,6 +149,14 @@ void MainWindow::slotButton(){
     QObject* obj = sender();
     Buttom *buttom=findChild<Buttom*>(obj->objectName());
     if(buttom->text()==ChooseWord[0]){
+        if(runAudio){
+            static QMediaPlayer *player = new QMediaPlayer;
+            player->setMedia(QUrl::fromLocalFile(QDir::toNativeSeparators("content\\"+ChooseWord[0]+".mp3")));
+            player->play();
+
+        }
+
+
         if (!go_next){
                     buttom->setStyleSheet(TRUE_ANSWER_COLOR);
                     go_next=true;
@@ -198,4 +216,19 @@ bool MainWindow::nextRound(){
     buttom_3->setText(World[2][0]);
     buttom_4->setText(World[3][0]);
 
+}
+
+void MainWindow::ColorTrueAncwer(){
+   for(int i=0;i!=SUMBUT;i++){
+       if(buttomList[i]->text()==ChooseWord[0]){
+           buttomList[i]->setStyleSheet(TRUE_ANSWER_COLOR+"color:red;");
+       }
+       else{
+           buttomList[i]->setStyleSheet(FALSE_ANSWER_COLOR);
+       }
+   };
+}
+
+void MainWindow::AudioPlay(){
+    runAudio=!runAudio;
 }

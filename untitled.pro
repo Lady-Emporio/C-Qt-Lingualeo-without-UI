@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets sql
+QT       += core gui widgets sql multimedia multimediawidgets
 
 TARGET = untitled
 TEMPLATE = app
